@@ -4,7 +4,8 @@ import re
 import urllib.request
 import os
 import chardet   #需要导入这个模块，检测编码格式
-
+import colorgram
+from hsluv import *
 
 # 抓取网页图片
 
@@ -36,15 +37,14 @@ def mkdir(path):
 
 
 # 输入文件名，保存多张图片
-def saveImages(imglist, name):
-    global number
-    number=1
+def saveImages(imglist, path,style):
+    global count
     for imageURL in imglist:
         splitPath = imageURL.split('.')
         fTail = splitPath.pop()
         if len(fTail) > 3:
             fTail = 'jpg'
-        fileName = name + "/" +"cute_"+str(number) + "." + fTail
+        fileName = path + "/" +style+"_"+str(count[style]) + "." + fTail
         # 对于每张图片地址，进行保存
         try:
             u = urllib.request.urlopen(imageURL)
@@ -55,7 +55,7 @@ def saveImages(imglist, name):
             f.close()
         except urllib.request.URLError as e:
             print (e.reason)
-        number += 1
+        count[style]+=1
 
 
         # 获取网页中所有图片的地址
@@ -70,16 +70,19 @@ def getAllImg(html):
     print("Len",len(imglist))
     return imglist
 
-
+count={}
 # 创建本地保存文件夹，并下载保存图片
 if __name__ == '__main__':
     style=['cute','fresh','business']
+    for s in style:
+        count[s]=0
     for query in style:
-        for i in range(1,400):
+        for i in range(1,2):
             print("Page:",i)
             html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular&type=photo")  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u'F:\doc\Contests\Intel\Data\'
+            path = u"/home/u22893/style_classifier/data"+query
             mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
-            saveImages(imglist, path)  # 保存图片
-    print("Total images count:",number)
+            saveImages(imglist, path,query)  # 保存图片
+    for s in style:
+        print(s+":",count[s])
