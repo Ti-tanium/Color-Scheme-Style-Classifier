@@ -88,7 +88,7 @@ if __name__ == '__main__':
         for i in range(1,2):
             print("Page:",i)
             html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular")  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u"F:\doc\Contests\Intel\style_classfier\Style_classifier\data\\"+query
+            path = u"/home/u22893/style_classifier/Style_classifier/data/"+query
             mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
             saveImages(imglist, path,query)  # 保存图片
