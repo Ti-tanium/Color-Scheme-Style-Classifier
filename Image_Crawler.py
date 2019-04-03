@@ -55,7 +55,7 @@ def saveImages(imglist, path,style):
             f.close()
             
             ## extrac color scheme
-            color_thief = ColorThief('./data/fresh/fresh_40.jpg')
+            color_thief = ColorThief(fileName)
 
             # build a color palette
             palette = color_thief.get_palette(color_count=5,quality=1)
