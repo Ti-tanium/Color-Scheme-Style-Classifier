@@ -5,7 +5,7 @@ import urllib.request
 import os
 import chardet   #需要导入这个模块，检测编码格式
 import colorgram
-from hsluv import *
+import csv
 
 # 抓取网页图片
 
@@ -51,8 +51,17 @@ def saveImages(imglist, path,style):
             data = u.read()
             f = open(fileName, 'wb+')
             f.write(data)
-            print("Saving:",fileName)
             f.close()
+            ## extract color scheme
+            colors=colorgram.extract(fileName,5)
+            with open("train.csv",'a+',newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                row=[]
+                for color in colors:
+                    row.extend(color.rgb)
+                row.extend([style])
+                writer.writerow(row)
+            print("Saving:",fileName)
         except urllib.request.URLError as e:
             print (e.reason)
         count[style]+=1
@@ -66,21 +75,20 @@ def getAllImg(html):
     reg = r'data-src="(.+?=jpg)"'
     pattern = re.compile(reg)
     imglist = pattern.findall(html)  # 表示在整个网页中过滤出所有图片的地址，放在imglist中
-    print(html)
     print("Len",len(imglist))
     return imglist
 
 count={}
 # 创建本地保存文件夹，并下载保存图片
 if __name__ == '__main__':
-    style=['cute','fresh','business']
+    style=['cute']#,'fresh','business']
     for s in style:
         count[s]=0
     for query in style:
         for i in range(1,2):
             print("Page:",i)
-            html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular&type=photo")  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u"/home/u22893/style_classifier/data"+query
+            html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular")  # 获取该网址网页详细信息，得到的html就是网页的源代码
+            path = u"F:\doc\Contests\Intel\style_classfier\Style_classifier\data\\"+query
             mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
             saveImages(imglist, path,query)  # 保存图片
