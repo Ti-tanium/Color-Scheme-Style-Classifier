@@ -4,8 +4,9 @@ import re
 import urllib.request
 import os
 import chardet   #需要导入这个模块，检测编码格式
-import colorgram
 import csv
+import colorsys
+from colorthief import ColorThief
 
 # 抓取网页图片
 
@@ -52,13 +53,24 @@ def saveImages(imglist, path,style):
             f = open(fileName, 'wb+')
             f.write(data)
             f.close()
-            ## extract color scheme
-            colors=colorgram.extract(fileName,5)
+            
+            ## extrac color scheme
+            color_thief = ColorThief('./data/fresh/fresh_40.jpg')
+
+            # build a color palette
+            palette = color_thief.get_palette(color_count=5,quality=1)
+
+            # sort palette by lightness
+            def sortByLight2(elem):
+                hls=colorsys.rgb_to_hls(*elem)
+                return hls[1]
+            palette.sort(key=sortByLight2,reverse=True)
+
             with open("train.csv",'a+',newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 row=[]
-                for color in colors:
-                    row.extend(color.rgb)
+                for color in palette:
+                    row.extend(color)
                 row.extend([style])
                 writer.writerow(row)
             print("Saving:",fileName)
