@@ -7,14 +7,18 @@ import chardet   #需要导入这个模块，检测编码格式
 import csv
 import colorsys
 from colorthief import ColorThief
+import http
 
 # 抓取网页图片
 
 
 # 根据给定的网址来获取网页详细信息，得到的html就是网页的源代码
 def getHtml(url):
-    page = urllib.request.urlopen(url)
-    html = page.read()
+    try:
+        page = urllib.request.urlopen(url)
+        html = page.read()
+    except (http.client.IncompleteRead) as e:
+        html = e.partial
     encode_type = chardet.detect(html)  
     html = html.decode(encode_type['encoding'])
     return html
