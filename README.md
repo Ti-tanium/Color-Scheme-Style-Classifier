@@ -29,6 +29,22 @@ if you want to collect more types of images just add the type to the style list
  
  # Classfier
  The classifer is trained using lightGBM. The data set has 30 features(5*3 rgb and 5*3 hls). The multi_error of the model is arround 32% (it's a little bit high:eyes:), there is still a long way to go. Any suggestion would be appreciated:blush:.
+ The parameters used to train lightGBM model are as follows:
+ ```
+ params = {
+    'boosting_type': 'gbdt',
+    'objective': 'multiclass',
+    'metric': {'multi_error'},
+    'learning_rate': 0.01,
+    'feature_fraction': 0.7,
+    'bagging_fraction': 0.7,
+    'bagging_freq': 4,
+    'num_class':3,
+    'num_leaves':400,
+    'max_depth':14,
+    'max_bin':30
+}
+```
  The detailed code is in the 'classifyPalette.ipynb' notebook. If you are not interested in the detailed training process, you can also use 'stylePredict.py' to do color scheme pridiction.
  
  ## Usage
