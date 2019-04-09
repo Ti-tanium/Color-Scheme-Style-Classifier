@@ -98,10 +98,12 @@ count={}
 # 创建本地保存文件夹，并下载保存图片
 if __name__ == '__main__':
     style=['cute','fresh','business']
+    StartPage=1
+    EndPage=400
     for s in style:
         count[s]=0
     for query in style:
-        for i in range(1,400):
+        for i in range(StartPage,EndPage):
             print("Page:",i)
             html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular")  # 获取该网址网页详细信息，得到的html就是网页的源代码
             path = u"/home/u22893/style_classifier/Style_classifier/data/"+query
