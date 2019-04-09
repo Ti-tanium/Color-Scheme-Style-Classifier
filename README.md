@@ -13,7 +13,11 @@ if you want to collect more types of images just add the type to the style list
   StartPage=1
   EndPage=400
  ```
- The images are stored in the 'data' folder. And also, the color scheme (palette) is extracted using <a href="https://github.com/fengsp/color-thief-py">Color Theif</a>. Each palette is composed of 5 rgb colors. Below is a example of color scheme extraction.
+ The images are stored in the 'data' folder. And also, the color scheme (palette) is extracted using <a href="https://github.com/fengsp/color-thief-py">Color Theif</a>. Each palette is composed of 5 rgb colors, and stored in 'train_2.csv', which looks like this:
+ 
+ <img src="images/traincsv.jpg"/>
+ 
+ Below is a example of color scheme extraction.
  
  Image:
  
