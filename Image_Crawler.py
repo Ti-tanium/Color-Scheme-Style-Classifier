@@ -97,18 +97,26 @@ def getAllImg(html):
 count={}
 # 创建本地保存文件夹，并下载保存图片
 if __name__ == '__main__':
-    style=['cute','fresh','business']
+    styles=['cute','techonology','fresh']
+    url={
+        'cute':'https://www.freepik.com/search?dates=any&format=search&people=exclude&premium=1&query=cute&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon',
+        'technology':'https://www.freepik.com/search?color=blue&dates=any&format=search&premium=1&query=technology&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon',
+        'fresh':'https://www.freepik.com/search?color=green&dates=any&format=search&people=exclude&premium=1&query=fresh&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon'
+    }
     StartPage=1
-    EndPage=400
-    for s in style:
+    EndPage=500
+    for s in styles:
         count[s]=0
-    for query in style:
+    for style in styles:
         for i in range(StartPage,EndPage):
             print("Page:",i)
-            html = getHtml("https://www.freepik.com/search?page="+str(i)+"&query="+query+"&sort=popular")  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u"/home/u22893/style_classifier/Style_classifier/data/"+query
+            html = getHtml(url[style]+"?page="+str(i))  # 获取该网址网页详细信息，得到的html就是网页的源代码
+            path = u"/mnt/toshiba/StyleData/data/"+style
             mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
-            saveImages(imglist, path,query)  # 保存图片
-    for s in style:
+            saveImages(imglist, path,style)  # 保存图片
+    for s in styles:
         print(s+":",count[s])
+        
+        
+        
