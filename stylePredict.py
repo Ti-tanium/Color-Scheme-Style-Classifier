@@ -2,11 +2,12 @@ import lightgbm as gbm
 import colorsys
 import pandas as pd
 MODEL_PATH='./model.txt'
-
+EPS=0.7
 gbm=gbm.Booster(model_file=MODEL_PATH)
 
 # param: palette,eg:[(r,g,b),(r,g,b),(r,g,b),(r,g,b),(r,g,b)]
 # return style ['cute','fresh','technology']
+# return -1: do not belong to cute, fresh or technology
 def style_predict(palette):
     def sortByLight2(elem):
         hls=colorsys.rgb_to_hls(*elem)
@@ -19,10 +20,10 @@ def style_predict(palette):
         palette1=[*palette1,h,l,s]
     x=pd.Series(palette1)
     y_pred = gbm.predict(x, num_iteration=gbm.best_iteration)
-    pred_Y=[0 for i in range(len(y_pred))]
     y_pred=y_pred.tolist()
-    style=['cute','fresh','technology']
-    for i in range(len(y_pred)):
-        pred_Y[i]=y_pred[i][:].index(max(y_pred[i][:]))
+    style=['cute','technology','fresh']
+    if(max(*y_pred)<EPS):
+        return -1
+    pred_Y=y_pred.index(max(y_pred))
     print("Probability：",y_pred)
-    return style[pred_Y[0]]
+    return style[pred_Y]
