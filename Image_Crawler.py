@@ -88,7 +88,7 @@ def saveImages(imglist, path,style):
 
 def getAllImg(html):
     # 利用正则表达式把源代码中的图片地址过滤出来
-    reg = r'data-src="(.+?=jpg)"'
+    reg = r'<img class="z_e_h" src="(.*?)" alt='
     pattern = re.compile(reg)
     imglist = pattern.findall(html)  # 表示在整个网页中过滤出所有图片的地址，放在imglist中
     print("Len",len(imglist))
@@ -99,9 +99,9 @@ count={}
 if __name__ == '__main__':
     styles=['cute','techonology','fresh']
     url={
-        'cute':'https://www.freepik.com/search?dates=any&format=search&people=exclude&premium=1&query=cute&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon',
-        'technology':'https://www.freepik.com/search?color=blue&dates=any&format=search&premium=1&query=technology&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon',
-        'fresh':'https://www.freepik.com/search?color=green&dates=any&format=search&people=exclude&premium=1&query=fresh&selection=1&sort=popular&type=vector%2Cphoto%2Cpsd%2Cicon'
+        'cute':'https://www.shutterstock.com/search/cute+pink?mreleased=false',
+        'technology':'https://www.shutterstock.com/search/fresh+green?mreleased=false',
+        'fresh':'https://www.shutterstock.com/search/technology+blue+future?mreleased=false'
     }
     StartPage=1
     EndPage=500
@@ -110,8 +110,8 @@ if __name__ == '__main__':
     for style in styles:
         for i in range(StartPage,EndPage):
             print("Page:",i)
-            html = getHtml(url[style]+"?page="+str(i))  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u"/mnt/toshiba/StyleData/data/"+style
+            html = getHtml(url[style]+"&page="+str(i))  # 获取该网址网页详细信息，得到的html就是网页的源代码
+            path = u"G:\StyleData\data\\"+style
             mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
             saveImages(imglist, path,style)  # 保存图片
