@@ -1,12 +1,8 @@
 # Style_classifier
 This repository trained a classifier to differentiate different style of color scheme, such as cute, fresh or technology.
 # Image Crawler
-The images used to train the classifier are crawled from <a href="https://www.freepik.com">FreePik<a/>. Three types of images are collected, including 'cute', 'fresh', 'technology'.
-if you want to collect more types of images just add the type to the style list
- ``` 
-  style=['cute','fresh','business'] 
- ```
-  
+The images used to train the classifier are crawled from <a href="https://www.shutterstock.com/">ShutterStock<a/>. Three types of images are collected, including 'cute', 'fresh', 'technology'.
+
  change the 'StartPage' and 'EndPage' variable to collect images from different pages
  
  ```
