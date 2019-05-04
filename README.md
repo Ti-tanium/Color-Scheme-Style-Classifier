@@ -1,17 +1,50 @@
 # Style_classifier
 This repository trained a classifier to differentiate different style of color scheme, such as cute, fresh or technology.
-# Image Crawler
+## Image Crawler
+### Prerequisite
+
+The following libraries are required
+```
+pip install colorthief
+pip install chardet
+pip install http
+```
+
+### Usage
+
 The images used to train the classifier are crawled from <a href="https://www.shutterstock.com/">ShutterStock<a/>. Three types of images are collected, including 'cute', 'fresh', 'technology'.
 
- change the 'StartPage' and 'EndPage' variable to collect images from different pages
- 
+If you want to crawl more types of images, add your url in ditc 'url', and then add a tag to list 'style':
+
+```
+    styles=['technology','cute','fresh']
+    url={
+        'cute':'https://www.shutterstock.com/search/cute+pink?mreleased=false',
+        'technology':'https://www.shutterstock.com/search/fresh+green?mreleased=false',
+        'fresh':'https://www.shutterstock.com/search/technology+blue+future?mreleased=false'
+    }
  ```
-  StartPage=1
-  EndPage=400
- ```
- The images are stored in the 'data' folder. And also, the color scheme (palette) is extracted using <a href="https://github.com/fengsp/color-thief-py">Color Theif</a>. Each palette is composed of 5 rgb colors, and stored in 'train_2.csv', which looks like this:
+
+Change the PATH and DATA_FILENAME to where you want to save your data:
+
+```
+# where to save your data
+PATH="./data/"
+DATA_FILENAME="train_tech.csv"
+```
+
+And then run the following command, note that every page contains about 100 images, the Tag is the temporary file name to store the images.
+> python ./Image_Crawler.py startPage endPage Tag
+
+For example:
+
+> python ./Image_Crawler.py 1 100 1
+
+ The images are stored in the 'data' folder. And also, the color scheme (palette) is extracted using <a href="https://github.com/fengsp/color-thief-py">Color Theif</a>. Each palette is composed of 5 rgb colors, and stored in DATA_FILENAME, which looks like this:
  
  <img src="images/traincsv.jpg"/>
+ 
+ ## Color Extraction with Color Thief
  
  Below is a example of color scheme extraction.
  
@@ -23,7 +56,7 @@ The images used to train the classifier are crawled from <a href="https://www.sh
  
  <img src="./images/cute_4.jpg">
  
- # Classfier
+ ## Classfier
  The classifer is trained using lightGBM. The data set has 30 features(5*3 rgb and 5*3 hls). The multi_error of the model is arround 32% (it's a little bit high:eyes:), there is still a long way to go. Any suggestion would be appreciated:blush:.
  The parameters used to train lightGBM model are as follows:
  ```
