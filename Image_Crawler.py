@@ -8,9 +8,12 @@ import colorsys
 from colorthief import ColorThief
 import http
 
+# where to save your data
+PATH="./data/"
+DATA_FILENAME="train_tech.csv"
+
+
 # 抓取网页图片
-
-
 # 根据给定的网址来获取网页详细信息，得到的html就是网页的源代码
 def getHtml(url):
     try:
@@ -41,7 +44,7 @@ def mkdir(path):
 
 
 # 输入文件名，保存多张图片
-def saveImages(imglist, path,style,fileName):
+def saveImages(imglist,style,fileName):
     global count
     for imageURL in imglist:
         splitPath = imageURL.split('.')
@@ -68,7 +71,7 @@ def saveImages(imglist, path,style,fileName):
                 return hls[1]
             palette.sort(key=sortByLight2,reverse=True)
 
-            with open("train_tech.csv",'a+',newline='') as csvfile:
+            with open(DATA_FILENAME,'a+',newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 row=[]
                 for color in palette:
@@ -112,10 +115,8 @@ if __name__ == '__main__':
         for i in range(StartPage,EndPage):
             print("Page:",i)
             html = getHtml(url[style]+"&page="+str(i))  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = "./data/"+style
-            # mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
-            saveImages(imglist, path,style,sys.argv[3])  # 保存图片
+            saveImages(imglist,style,sys.argv[3])  # 保存图片
     for s in styles:
         print(s+":",count[s])
         
