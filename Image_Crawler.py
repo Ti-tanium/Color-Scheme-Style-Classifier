@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-# chenlong
 import re
 import urllib.request
 import os
+import sys
 import chardet   #需要导入这个模块，检测编码格式
 import csv
 import colorsys
@@ -42,14 +41,13 @@ def mkdir(path):
 
 
 # 输入文件名，保存多张图片
-def saveImages(imglist, path,style):
+def saveImages(imglist, path,style,fileName):
     global count
     for imageURL in imglist:
         splitPath = imageURL.split('.')
         fTail = splitPath.pop()
         if len(fTail) > 3:
             fTail = 'jpg'
-        fileName = path + "/" +style+"_"+str(count[style]) + "." + fTail
         # 对于每张图片地址，进行保存
         try:
             u = urllib.request.urlopen(imageURL)
@@ -70,16 +68,18 @@ def saveImages(imglist, path,style):
                 return hls[1]
             palette.sort(key=sortByLight2,reverse=True)
 
-            with open("train.csv",'a+',newline='') as csvfile:
+            with open("train_tech.csv",'a+',newline='') as csvfile:
                 writer = csv.writer(csvfile)
                 row=[]
                 for color in palette:
                     row.extend(color)
                 row.extend([style])
                 writer.writerow(row)
-            print("Saving:",fileName)
+            print("Saving:",imageURL)
         except urllib.request.URLError as e:
             print (e.reason)
+        except:
+            print("Imcomplete Read")
         count[style]+=1
 
 
@@ -97,24 +97,25 @@ def getAllImg(html):
 count={}
 # 创建本地保存文件夹，并下载保存图片
 if __name__ == '__main__':
-    styles=['cute','techonology','fresh']
+    styles=['technology']
     url={
         'cute':'https://www.shutterstock.com/search/cute+pink?mreleased=false',
         'technology':'https://www.shutterstock.com/search/fresh+green?mreleased=false',
         'fresh':'https://www.shutterstock.com/search/technology+blue+future?mreleased=false'
     }
-    StartPage=1
-    EndPage=500
+    StartPage=int(sys.argv[1])
+    EndPage=int(sys.argv[2])
+    print(f"{StartPage} - {EndPage}") 
     for s in styles:
         count[s]=0
     for style in styles:
         for i in range(StartPage,EndPage):
             print("Page:",i)
             html = getHtml(url[style]+"&page="+str(i))  # 获取该网址网页详细信息，得到的html就是网页的源代码
-            path = u"G:\StyleData\data\\"+style
-            mkdir(path)  # 创建本地文件夹
+            path = "./data/"+style
+            # mkdir(path)  # 创建本地文件夹
             imglist = getAllImg(html)  # 获取图片的地址列表
-            saveImages(imglist, path,style)  # 保存图片
+            saveImages(imglist, path,style,sys.argv[3])  # 保存图片
     for s in styles:
         print(s+":",count[s])
         
