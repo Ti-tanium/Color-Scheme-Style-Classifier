@@ -44,6 +44,8 @@ For example:
  
  <img src="images/traincsv.jpg"/>
  
+ ## Data 
+ 
  ## Color Extraction with Color Thief
  
  Below is a example of color scheme extraction.
@@ -57,10 +59,11 @@ For example:
  <img src="./images/cute_4.jpg">
  
  ## Classfier
- The classifer is trained using lightGBM. The data set has 30 features(5*3 rgb and 5*3 hls). The multi_error of the model is arround 32% (it's a little bit high:eyes:), there is still a long way to go. Any suggestion would be appreciated:blush:.
+ The classifer is trained using lightGBM. The data set has 30 features(5*3 rgb and 5*3 hls). The Accuracy of the model is arround 0.9263. Any suggestion to improve the model would be appreciated:blush:.
  The parameters used to train lightGBM model are as follows:
  ```
- params = {
+# specify your configurations as a dict
+params = {
     'boosting_type': 'gbdt',
     'objective': 'multiclass',
     'metric': {'multi_error'},
@@ -70,7 +73,7 @@ For example:
     'bagging_freq': 4,
     'num_class':3,
     'num_leaves':400,
-    'max_depth':14,
+    'max_depth':10,
     'max_bin':30
 }
 ```
