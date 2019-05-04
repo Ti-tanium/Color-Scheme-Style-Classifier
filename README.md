@@ -59,7 +59,7 @@ For example:
  <img src="./images/cute_4.jpg">
  
  ## Classfier
- The classifer is trained using lightGBM. The data set has 30 features(5*3 rgb and 5*3 hls). The Accuracy of the model is arround 0.9263. Any suggestion to improve the model would be appreciated:blush:.
+ The classifer is trained using lightGBM. The data set has 15 features(5*3 rgb). The Accuracy of the model is arround 0.9263. Any suggestion to improve the model would be appreciated:blush:.
  The parameters used to train lightGBM model are as follows:
  ```
 # specify your configurations as a dict
